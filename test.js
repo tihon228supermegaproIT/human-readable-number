@@ -1,36 +1,25 @@
 function toReadable(number) {
-    // Define the words for numbers 0-19
-    const words = [
-      "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
-      "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"
+    const singleDigits = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+    const twoDigitsLessThan20 = [
+      'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'
     ];
-  
-    // Define the words for tens multiples
-    const tensWords = [
-      "", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"
-    ];
-  
-    // Handle number 0
+    const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+    
     if (number === 0) {
-      return "zero";
+      return 'zero';
+    } else {
+      return convertNumberToString(number);
     }
-  
-    // Handle numbers 1-19
-    if (number < 20) {
-      return words[number];
-    }
-  
-    // Handle numbers 20-99
-    if (number < 100) {
-      let tens = Math.floor(number / 10);
-      let ones = number % 10;
-      return tensWords[tens] + (ones ? " " + words[ones] : "");
-    }
-  
-    // Handle numbers 100 and above
-    if (number >= 100) {
-      let hundreds = Math.floor(number / 100);
-      let remainder = number % 100;
-      return words[hundreds] + " hundred" + (remainder ? " " + toReadable(remainder) : "");
+    
+    function convertNumberToString(number) {
+      if (number < 10) {
+        return singleDigits[number];
+      } else if (number < 20) {
+        return twoDigitsLessThan20[number - 10];
+      } else if (number < 100) {
+        return `${tens[Math.floor(number / 10)]} ${singleDigits[number % 10]}`.trim();
+      } else {
+        return `${singleDigits[Math.floor(number / 100)]} hundred ${convertNumberToString(number % 100)}`.trim();
+      }
     }
   }
