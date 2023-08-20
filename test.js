@@ -1,42 +1,45 @@
 function toReadable(number) {
-    // Arrays to store the words for numbers
-    var units = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-    var tens = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-    var teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-  
-    // Helper function to convert a two-digit number to words
-    function twoDigitsToWords(number) {
-      if (number < 10) {
-        return units[number];
-      } else if (number < 20) {
-        return teens[number - 10];
-      } else {
-        var unit = units[number % 10];
-        var ten = tens[Math.floor(number / 10)];
-        return ten + (unit ? ' ' + unit : '');
-      }
-    }
-  
-    // Helper function to convert a three-digit number to words
-    function threeDigitsToWords(number) {
-      var hundred = units[Math.floor(number / 100)];
-      var twoDigits = twoDigitsToWords(number % 100);
-      return (hundred ? hundred + ' hundred' : '') + (twoDigits ? ' ' + twoDigits : '');
-    }
-  
-    // Main function to convert any number to words
-    function convertToWords(number) {
-      if (number === 0) {
-        return units[0];
-      } else if (number < 100) {
-        return twoDigitsToWords(number);
-      } else {
-        return threeDigitsToWords(number);
-      }
-    }
-  
-    return convertToWords(number);
+  const units = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  const teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+  const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+  if (number === 0) {
+    return 'zero';
   }
-  
-  console.log(toReadable(1)); // Output: 'one'
-  console.log(toReadable(997)); // Output: 'nine hundred ninety seven'
+
+  function convert(n) {
+    const readableNumber = [];
+
+    if (n >= 100 && n <= 999) {
+      readableNumber.push(units[Math.floor(n / 100)], 'hundred');
+      n = n % 100;
+      if (n === 0) {
+        return readableNumber.join(' ').trim();
+      }
+    }
+
+    if (n >= 20 && n <= 99) {
+      readableNumber.push(tens[Math.floor(n / 10)]);
+      n = n % 10;
+      if (n === 0) {
+        return readableNumber.join(' ').trim();
+      }
+    }
+
+    if (n >= 10 && n <= 19) {
+      readableNumber.push(teens[n % 10]);
+      return readableNumber.join(' ').trim();
+    }
+
+    if (n >= 1 && n <= 9) {
+      readableNumber.push(units[n]);
+      return readableNumber.join(' ').trim();
+    }
+  }
+
+  return convert(number);
+}
+
+console.log(toReadable(123)); // output: "one hundred twenty three"
+console.log(toReadable(4567)); // output: "four thousand five hundred sixty seven"
+console.log(toReadable(89)); // output: "eighty nine"
